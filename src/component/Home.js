@@ -1,54 +1,69 @@
 import React, { useContext,useState,useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { adddata } from './context/ContextProvider';
+import {useDispatch,useSelector} from "react-redux";
+import { deleteUser, loadUsers } from '../redux/actions';
+
+
 
 const Home = () => {
+  let dispatch = useDispatch();
+    const {users} = useSelector(state => state.data)
+  useEffect(()=>{
+    dispatch(loadUsers())
+  },[]);
+
+  const handleDelete = (id) => {
+    if(window.confirm("Are you Sure you wanted to delete the User")){
+      dispatch(deleteUser(id))
+    }
+  }
 
     const [getuserdata, setUserdata] = useState([]);
-    console.log(getuserdata);
+    // console.log(getuserdata);
 
     // const [udata,setUdata] = useContext(adddata);
 
-    const getdata = async(e) =>{
+    // const getdata = async(e) =>{
     
-         const res = await fetch("http://localhost:3000/getdata",{
-           method : "GET",
-           headers:{
-             "Content-Type":"application/json"
-           }
-         })
+    //      const res = await fetch("http://localhost:3000/getdata",{
+    //        method : "GET",
+    //        headers:{
+    //          "Content-Type":"application/json"
+    //        }
+    //      })
     
-         const data = await res.json();
-         console.log(data,"data");
+    //      const data = await res.json();
+    //     //  console.log(data,"data");
     
-         if(res.status === 404 || !data){
-           console.log("error");
-         }else{
-            setUserdata(data)
-           console.log("get data ");
-         }
-      }
+    //      if(res.status === 404 || !data){
+    //        console.log("error");
+    //      }else{
+    //         setUserdata(data)
+    //        console.log("get data ");
+    //      }
+    //   }
 
-      useEffect(()=>{
-        getdata()
-      },[])
+    //   useEffect(()=>{
+    //     getdata()
+    //   },[])
 
-      const deleteuse = async(id) =>{
-        const res2 = await fetch(`http://localhost:3000/deleteuser/${id}`,{
-            method : "DELETE",
-            headers:{
-                "Content-Type":"application/json"
-          }
-        });
-        const deletedata = await res2.json();
+      // const deleteuse = async(id) =>{
+      //   const res2 = await fetch(`http://localhost:3000/deleteuser/${id}`,{
+      //       method : "DELETE",
+      //       headers:{
+      //           "Content-Type":"application/json"
+      //     }
+      //   });
+      //   const deletedata = await res2.json();
 
-        if(res2.status === 422 || !deletedata){
-            console.log("error");
-            getdata();
-        }else{
+      //   if(res2.status === 422 || !deletedata){
+      //       console.log("error");
+      //       // getdata();
+      //   }else{
 
-        }
-      }
+      //   }
+      // }
 
       const[query, setQuery] = useState("");
       
@@ -74,19 +89,19 @@ const Home = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {getuserdata.filter(element=>element.name.toLowerCase().includes(query)).map((element,id)=>{
+                        {users && users.filter(element=>element.name.toLowerCase().includes(query)).map((user,id,key)=>{
                             return(
                                 <>
-                                    <tr>
+                                    <tr key={key}>
                                         <td>{id + 1}</td>
-                                        <td>{element.name}</td>
-                                        <td>{element.email}</td>
-                                        <td>{element.work}</td>
-                                        <td>{element.mobile}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.work}</td>
+                                        <td>{user.mobile}</td>
                                         <td className='d-flex justify-content-between'>
-                                            <NavLink to={`view/${element._id}`}><button className='btn btn-warning'>View</button></NavLink>
-                                            <NavLink to={`edit/${element._id}`}><button className='btn btn-primary'>Edit</button></NavLink>
-                                            <button className='btn btn-danger' onClick={()=>deleteuse(element._id)}>Delete</button>
+                                            <NavLink to={`view/${user._id}`}><button className='btn btn-warning'>View</button></NavLink>
+                                            <NavLink to={`edit/${user._id}`}><button className='btn btn-primary'>Edit</button></NavLink>
+                                            <button className='btn btn-danger' onClick={()=>handleDelete(user._id)}>Delete</button>
                                         </td>
                                     </tr>
                                 </>

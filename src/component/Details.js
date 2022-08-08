@@ -1,7 +1,10 @@
 import React, { useState,useEffect } from 'react'
 import { useParams, NavLink, useNavigate } from 'react-router-dom';
 
+
 const Details = () => {
+
+ 
 
   const {id} = useParams("");
 
@@ -60,6 +63,10 @@ const Details = () => {
           </div>
         {/* <img src="..." className="card-img-top" alt="..." /> */}
         <div className="card-body">
+        
+          {/* <img src={`https://avatars.dicebear.com/api/:sprites/:${getuserdata.name}.svg`}></img> */}
+          {/* <img src={`https://avatars.dicebear.com/api/:sprites/:${getuserdata.name}.svg`} alt="" /> */}
+        
             <h5 className="card-title">Name : <span>{getuserdata.name}</span></h5>
             <p className="card-title">Age : <span>{getuserdata.age}</span></p>
             <p className="card-title">Email : <span>{getuserdata.email}</span></p>
