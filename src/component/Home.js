@@ -3,23 +3,37 @@ import { NavLink } from 'react-router-dom';
 import { adddata } from './context/ContextProvider';
 import {useDispatch,useSelector} from "react-redux";
 import { deleteUser, loadUsers } from '../redux/actions';
+import axios from "axios";
 
 
 
 const Home = () => {
-  let dispatch = useDispatch();
-    const {users} = useSelector(state => state.data)
-  useEffect(()=>{
-    dispatch(loadUsers())
-  },[]);
 
+// get data function start
+  let dispatch = useDispatch();
+  const[data, setdata] = useState({name : "", email : ""});  //for search data
+
+  const {users} = useSelector(state => state.data)
+  console.log(users)
+  useEffect(()=>{
+    // setdata({...data})
+    dispatch(loadUsers()) 
+  },[]);
+// get data function end
+
+
+  // delete function start
   const handleDelete = (id) => {
     if(window.confirm("Are you Sure you wanted to delete the User")){
       dispatch(deleteUser(id))
     }
   }
 
-    const [getuserdata, setUserdata] = useState([]);
+  
+  // delete function end
+
+
+    // const [getuserdata, setUserdata] = useState([]);
     // console.log(getuserdata);
 
     // const [udata,setUdata] = useContext(adddata);
@@ -44,9 +58,9 @@ const Home = () => {
     //      }
     //   }
 
-    //   useEffect(()=>{
-    //     getdata()
-    //   },[])
+      // useEffect(()=>{
+      //   getdata()
+      // },[])
 
       // const deleteuse = async(id) =>{
       //   const res2 = await fetch(`http://localhost:3000/deleteuser/${id}`,{
@@ -65,7 +79,7 @@ const Home = () => {
       //   }
       // }
 
-      const[query, setQuery] = useState("");
+      const[query, setQuery] = useState("");  //for search data
       
   return (
       <>
@@ -76,23 +90,23 @@ const Home = () => {
                     <NavLink to="/register" className='btn btn-success'>Add Data</NavLink>
                 </div>
                 <input className="form-control my-2" onChange={(e)=> setQuery(e.target.value)} type="search" placeholder="Search" aria-label="Search"/>
-
+                
                 <table className="table">
                     <thead>
                         <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Job</th>
+                        <th scope="col">Position</th>
                         <th scope="col">Contact Number</th>
                         <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users && users.filter(element=>element.name.toLowerCase().includes(query)).map((user,id,key)=>{
+                        {users && users.filter(element=>element.name.toLowerCase().includes(query)).map((user,id,index)=>{
                             return(
                                 <>
-                                    <tr key={key}>
+                                    <tr key={index}>
                                         <td>{id + 1}</td>
                                         <td>{user.name}</td>
                                         <td>{user.email}</td>
@@ -110,6 +124,7 @@ const Home = () => {
                         
                     </tbody>
                 </table>
+              
             </div>
         </div>
       </>
