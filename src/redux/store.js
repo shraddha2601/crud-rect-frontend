@@ -13,8 +13,9 @@ const store = createStore(rootReducer, composeEnhancers(
   applyMiddleware(...middlewares)
 
 ));
-console.log('Initial state: ', store.getState())
-const unsubscribe = store.subscribe(() =>
-  console.log('State after dispatch: ', store.getState())
-)
+// console.log('Initial state: ', store.getState())
+// const unsubscribe = store.subscribe(() =>
+//   console.log('State after dispatch: ', store.getState())
+// )
+
 export default store

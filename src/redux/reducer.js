@@ -1,6 +1,7 @@
 import * as types from "./actionType";
 
 const initialState = {
+   
     users : [],
     user : {},
     loading : true
@@ -13,12 +14,26 @@ const usersReducers = (state = initialState, action) =>{
                 ...state,
                 users : action.payload,
                 loading : false,
+
             };
         case types.ADD_USER: 
-        case types.UPDATE_USER: 
             return{
                 ...state,
-                // users : action.payload,
+                users : [...state.users,action.payload.data],
+                loading : false,
+ 
+        };
+        case types.UPDATE_USER: 
+            let newUser1 = state.users.map(ele=> {
+                if(ele._id===action.payload._id){
+                    return action.payload
+                }else{
+                    return ele
+                }
+            })
+            return{
+                ...state,
+                users : newUser1,
                 loading : false,
             };
         case types.GET_SINGLE_USER:{

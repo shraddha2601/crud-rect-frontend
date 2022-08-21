@@ -1,28 +1,32 @@
 import * as types from "./actionType";
 import axios from "axios"; 
 
+
 const getUsers = (users) =>({
     type : types.GET_USERS,
     payload : users
 })
-
+    
 const userDeleted = () =>({
+    type : types.DELETE_USER ,
+
+})
+
+const userAdded = (users) =>({
     type : types.ADD_USER,
+    payload : users
+
 })
 
-const userAdded = () =>({
-    type : types.DELETE_USER,
-})
-
-const userUpdated = () =>({
+const userUpdated = (user) =>({
     type : types.UPDATE_USER,
+    payload : user
 })
 
 const getuser = (user) =>({
     type : types.GET_SINGLE_USER,
     payload : user
 })
-
 
 // get user
 export const loadUsers = () => {
@@ -40,7 +44,6 @@ export const deleteUser = (id) => {
         axios.delete(`http://localhost:3000/deleteuser/${id}`).then((resp)=>{
             console.log("resp",resp);
             dispatch(userDeleted());
-            dispatch(loadUsers());
 
         }).catch(error => console.log(error))
     }
@@ -51,7 +54,7 @@ export const addUser = (user) => {
     return function(dispatch){
         axios.post("http://localhost:3000/register",user).then((resp)=>{
             console.log("resp",resp);
-            dispatch(userAdded());
+            dispatch(userAdded(resp));
             // dispatch(loadUsers());
 
         }).catch(error => console.log(error))
@@ -76,7 +79,7 @@ export const updateUser = (user, id) => {
     return function(dispatch){
         axios.patch(`http://localhost:3000/updateuser/${id}`, user).then((resp)=>{
             console.log("resp",resp);
-            dispatch(userUpdated());
+            dispatch(userUpdated(resp.data));
             // dispatch(loadUsers());
 
         }).catch(error => console.log(error))

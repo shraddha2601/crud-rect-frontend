@@ -1,24 +1,26 @@
 import React, { useContext,useState,useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { adddata } from './context/ContextProvider';
-import {useDispatch,useSelector} from "react-redux";
+import {connect, useDispatch,useSelector} from "react-redux";
 import { deleteUser, loadUsers } from '../redux/actions';
 import axios from "axios";
 
 
 
 const Home = () => {
-
 // get data function start
   let dispatch = useDispatch();
   const[data, setdata] = useState({name : "", email : ""});  //for search data
 
-  const {users} = useSelector(state => state.data)
-  console.log(users)
+  const {users} = useSelector(state => state.data);
+  // const {users} = users;
+  console.log(users,"userssdhfg")
   useEffect(()=>{
-    // setdata({...data})
-    dispatch(loadUsers()) 
-  },[]);
+    if(users?.length === 0){
+      dispatch(loadUsers()) 
+    }
+    setdata({...data})
+  },[dispatch]);
 // get data function end
 
 
@@ -46,6 +48,7 @@ const Home = () => {
     //          "Content-Type":"application/json"
     //        }
     //      })
+
     
     //      const data = await res.json();
     //     //  console.log(data,"data");
@@ -80,11 +83,16 @@ const Home = () => {
       // }
 
       const[query, setQuery] = useState("");  //for search data
-      
+     
+     
+      // const posts = [];
+      // for (let post of this.this.props.posts){
+      //   posts.push(<div key={post.id}>{post.title}</div>)
+      // }
   return (
       <>
-      
         <div className='mt-5'>
+          {/* <p>{posts}</p> */}
             <div className="container">
                 <div className="add-btn mt-2">
                     <NavLink to="/register" className='btn btn-success'>Add Data</NavLink>
@@ -92,7 +100,7 @@ const Home = () => {
                 <input className="form-control my-2" onChange={(e)=> setQuery(e.target.value)} type="search" placeholder="Search" aria-label="Search"/>
                 
                 <table className="table">
-                    <thead>
+                   <thead>
                         <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Username</th>
@@ -100,10 +108,10 @@ const Home = () => {
                         <th scope="col">Position</th>
                         <th scope="col">Contact Number</th>
                         <th scope="col">Actions</th>
-                        </tr>
+                        </tr> 
                     </thead>
                     <tbody>
-                        {users && users.filter(element=>element.name.toLowerCase().includes(query)).map((user,id,index)=>{
+                        {users.length >0 && users.filter(element=>element.name.toLowerCase().includes(query)).map((user,id,index)=>{
                             return(
                                 <>
                                     <tr key={index}>
@@ -131,4 +139,12 @@ const Home = () => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+     sName : state.data.users
+  
+  }
+}
+
 export default Home
+// export default connect(mapStateToProps)(Home)

@@ -19,20 +19,21 @@ const Edit = () => {
     name,email,age,mobile,work,add,des
   });
 
-  const handleEditUser = () => {
-    setValues({ name : "",email : "",age : "",mobile : "",work : "",add : "",des : ""  });
-    dispatch(updateUser({
-      id: params.id,
-      name: values.name,
-      email: values.email,
-      age: values.age,
-      mobile: values.mobile,
-      work: values.work,
-      add: values.add,
-      des: values.des,
-    }));
-    history('/');
-  }
+  // const handleEditUser = () => {
+  //   setValues({ name : "",email : "",age : "",mobile : "",work : "",add : "",des : ""  });
+  //   dispatch(updateUser({
+  //     id,
+  //     name: values.name,
+  //     email: values.email,
+  //     age: values.age,
+  //     mobile: values.mobile,
+  //     work: values.work,
+  //     add: values.add,
+  //     des: values.des,
+  //   }));
+    
+  //   history('/');
+  // }
 
   const history = useNavigate("")
     const [inputVal, setINP] = useState({
@@ -124,10 +125,10 @@ const Edit = () => {
   
     const handleSubmit = (e) =>{
       e.preventDefault();
-      if(!inputVal.name || !inputVal.email || !inputVal.mobile){
+      if(!values.name || !values.email || !values.mobile){
         setError("please fill all input values")
       }else{
-        dispatch(updateUser(inputVal, id));
+        dispatch(updateUser(values, id));
         history("/");
         setError("");
       }
@@ -151,7 +152,7 @@ const Edit = () => {
   return (
     <div className='container'>
     {/* <NavLink to="/">Home 2</NavLink> */}
-    <form className='mt-5'  onSubmit={handleEditUser}>
+    <form className='mt-5'  onSubmit={handleSubmit}>
       <div className="row">
         <div className="mb-3 col-lg-6 col-md-6 col-12">
           <label htmlFor="exampleInputEmail1" className="form-label">Name</label>

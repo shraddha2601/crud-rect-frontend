@@ -7,6 +7,7 @@ const Details = () => {
   const params  = useParams();
 
   const { users } = useSelector(state => state.data)
+  console.log(users,"users details")
 
   const getUser = users.filter(item => item._id === params.id)
 
@@ -81,41 +82,3 @@ const Details = () => {
 }
 
 export default Details
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
